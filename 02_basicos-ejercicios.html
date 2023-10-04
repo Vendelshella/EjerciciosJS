@@ -186,7 +186,7 @@
       return resultado;
     }
 
-    console.log(verificarCapicua(2002));
+    // console.log(verificarCapicua(2002));
 
 
     /* 11) Programa una función que calcule el factorial de un número (El factorial de un entero positivo n, se define como el producto de todos los números enteros positivos desde 1 hasta n), pe. miFuncion(5) devolverá 120 */
@@ -210,19 +210,94 @@
     
     /* 12) Programa una función que determine si un número es primo (aquel que solo es divisible por sí mismo y 1) o no, pe. miFuncion(7) devolverá true */
 
+    function esNumeroPrimo (numero) {
+        if(numero === 1 || numero === 0){
+          console.info("El numero introducido tiene que ser mayor que 1");
+        }if(isNaN(numero)){
+            console.error("Debes escribir un número mayor que 1.");
+        }else{
+          let x = "";
+          for(let i=2; i<numero; i++){ // Encontrar un número inferior al número pasado como argumento cuyo residuo sea 0.
+            if(numero%i === 0){
+              x = `El número "${numero}" no es un número primo`;
+              console.log(x);
+              if(x == true){
+                break; // Si la variable x contiene un string lleno ya no hace falta imprimir más console log y el break nos saca del bucle.
+              }
+            }
+          }if(x == false){ // Si la variable x contiene un string vacío se imprime el siguiente mensaje.
+              console.log(`El número "${numero}" es un número primo`);
+            }
+          
+        }
+    }
+
+    // esNumeroPrimo(7);
 
 
     /* 13) Programa una función que determine si un número es par o impar, pe. miFuncion(29) devolverá Impar */
 
+    function esPar (numero = 29) {
+      if(numero%2 === 0) {
+        console.log("Es un número par");
+      }else{
+        console.log("Es un número impar");
+      }
+    }
 
+    // esPar();
 
     /* 14) Programa una función para convertir grados Celsius a Fahrenheit y viceversa, pe. miFuncion(0,"C") devolverá 32°F */
 
+    function conversorGrados (numero, tipo) {
+      let resultado = 0;
+      if(isNaN(numero)){
+        console.error("Introduce un número.");
+      }else{
+        if(tipo === "C"){
+        resultado = numero + 32;
+        return resultado + "°F";
+        }
+        if(tipo === "F"){
+          resultado = numero - 32;
+          return resultado + "°C";
+        }
+      }
+      
+    }
 
+    // console.log(conversorGrados(0, "C"));
 
     /* 15) Programa una función para convertir números de base binaria a decimal y viceversa, pe. miFuncion(100,2) devolverá 4 base 10 */
 
+    function consversorBinarioADecimal (binario, base) {
+      // Pasamos el numero binario a Array
+      let bin = [];
+      // Lo pasamos a String, lo dividimos, lo pasamos a números y le damos la vuelta.
+      bin = binario.toString().split('').map(caracter => parseInt(caracter, 10)).reverse();
+      console.log(bin);
+      let resultado = 0;
+      // Variable para incrementar el exponente
+      let exp = 0;
+      
+      // Bucle para recorrer el array con los valores binarios
+      for (let i = 0; i < bin.length; i++) {
+        
+        if(bin[i] === 1){
+          // Calcular la base elevada a la potencia
+          calculo = Math.pow(base, exp);
+          // Sumar el resultado
+          resultado += calculo;
+          exp++;
+        }else{
+          exp++;
+        }
+        
+      }
+      return resultado;
+    }
 
+    console.log(consversorBinarioADecimal(100, 2));
 
     /* 16) Programa una función que devuelva el monto final después de aplicar un descuento a una cantidad dada, pe. miFuncion(1000, 20) devolverá 800 */
 
