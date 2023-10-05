@@ -211,14 +211,14 @@
     /* 12) Programa una función que determine si un número es primo (aquel que solo es divisible por sí mismo y 1) o no, pe. miFuncion(7) devolverá true */
 
     function esNumeroPrimo (numero) {
-        if(numero === 1 || numero === 0){
+        if(numero === 1 || numero === 0 || numero < 0){
           console.info("El numero introducido tiene que ser mayor que 1");
         }if(isNaN(numero)){
             console.error("Debes escribir un número mayor que 1.");
         }else{
           let x = "";
           for(let i=2; i<numero; i++){ // Encontrar un número inferior al número pasado como argumento cuyo residuo sea 0.
-            if(numero%i === 0){
+            if(numero % i === 0){
               x = `El número "${numero}" no es un número primo`;
               console.log(x);
               if(x == true){
@@ -238,28 +238,35 @@
     /* 13) Programa una función que determine si un número es par o impar, pe. miFuncion(29) devolverá Impar */
 
     function esPar (numero = 29) {
-      if(numero%2 === 0) {
-        console.log("Es un número par");
+      if(numero === undefined || typeof numero !=="number" || Math.sign(numero) === -1 || numero === 0){
+        return console.log("No ingresaste un número o el número es negativo o igual a 0.");
       }else{
-        console.log("Es un número impar");
+        if(numero%2 === 0) {
+        console.log("Es un número par");
+        }else{
+          console.log("Es un número impar");
+        }
       }
+      
     }
 
-    // esPar();
+    // esPar(-29);
 
     /* 14) Programa una función para convertir grados Celsius a Fahrenheit y viceversa, pe. miFuncion(0,"C") devolverá 32°F */
 
-    function conversorGrados (numero, tipo) {
+    function conversorGrados (numero, unidad) {
       let resultado = 0;
-      if(isNaN(numero)){
+      if(typeof numero !== "number"){
         console.error("Introduce un número.");
+      }else if(unidad !== "F" && unidad !== "C"){
+        console.error('La unidad introducida no es válida. Usa "C" para Celsius o "F" para Farenheit.');
       }else{
-        if(tipo === "C"){
-        resultado = numero + 32;
+        if(unidad === "C"){
+        resultado = (numero * 9/5) + 32;
         return resultado + "°F";
         }
-        if(tipo === "F"){
-          resultado = numero - 32;
+        if(unidad === "F"){
+          resultado = (numero - 32) * 5/9;
           return resultado + "°C";
         }
       }
@@ -270,10 +277,10 @@
 
     /* 15) Programa una función para convertir números de base binaria a decimal y viceversa, pe. miFuncion(100,2) devolverá 4 base 10 */
 
-    function consversorBinarioADecimal (binario, base) {
+    function conversorBinarioADecimal (binario, base) {
       // Pasamos el numero binario a Array
       let bin = [];
-      // Lo pasamos a String, lo dividimos, lo pasamos a números y le damos la vuelta.
+      // Lo pasamos a String, lo dividimos, lo pasamos a números en base decimal (10) y le damos la vuelta.
       bin = binario.toString().split('').map(caracter => parseInt(caracter, 10)).reverse();
       console.log(bin);
       let resultado = 0;
@@ -297,26 +304,157 @@
       return resultado;
     }
 
-    console.log(consversorBinarioADecimal(100, 2));
+    // console.log(conversorBinarioADecimal(100, 2));
+
+    function conversorBinarioDecimal (numero, base) {
+      if(base === 2){
+        let decimal = parseInt(numero, base);
+        console.log(`El número binario ${numero} en base ${base} es ${decimal} en base 10`);
+      }else if(base === 10){
+        let binario = parseInt(numero, base);
+        console.log(`El número decimal ${numero} en base ${base} es ${binario.toString(2)} en base 2`);
+      }
+      
+    }
+
+    // conversorBinarioDecimal ("4", 10);
+    // conversorBinarioDecimal ("100", 2);
+
 
     /* 16) Programa una función que devuelva el monto final después de aplicar un descuento a una cantidad dada, pe. miFuncion(1000, 20) devolverá 800 */
 
+    let descuento = (monto, porcentaje) => {
+      let resultado = 0;
+      resultado = (monto * porcentaje) / 100;
+      return resultado;
+    }
 
+    // console.log(descuento(1000, 20));
 
     /* 17) Programa una función que dada una fecha válida determine cuantos años han pasado hasta el día de hoy, pe. miFuncion(new Date(1984,4,23)) devolverá 35 años (en 2020) */
 
+    let calculaEdad = (dia, mes, anio) => {
+
+      // Conocer cual es la fecha actual
+      let fechaActual = new Date();
+      let anioActual = fechaActual.getFullYear();
+      let mesActual = fechaActual.getMonth() + 1;
+      let diaActual = fechaActual.getDate();
+
+      // Calcular la diferencia entre la fecha actual y la fecha de nacimiento de la persona
+      let difDia = diaActual - dia;
+      let difMes = mesActual - mes;
+      let difAnio = anioActual - anio;
+
+      // Calcular la edad real cuando todavía no ha sido el cumpleaños de la persona
+      let edadReal = 0;
+      if (difMes === Math.sign(-1)){
+        edadReal = difAnio -1;
+      }
+
+      console.log(`Tienes ${edadReal} años`);
+
+      // Mandar un mensaje diciendole a la persona cuanto falta para el próximo cumpleaños en caso de que los valores de día y mes sean negativos
+      if(difMes === Math.sign(-1) || difDia === Math.sign(-1)){
+        let mesPositivo = Math.abs(difMes);
+        let diaPositivo = Math.abs(difDia);
+        console.log(`Para tu próximo cumpleaños faltan ${mesPositivo} mes/meses y ${diaPositivo} día/días.`);
+      }
+    }
+
+    // Invocamos la función
+    // calculaEdad(20, 11, 1987);
+
+    // En la console podemos ver qué tipo de dato estamos manejando mediante el typeof o instanceof:
+    // Ejemplo: typeof 9 (nos devolverá "number").
+    // Ejemplo: new Date() instanceof Date (nos devolverá true).
 
 
     /* 18) Programa una función que dada una cadena de texto cuente el número de vocales y consonantes, pe. miFuncion("Hola Mundo") devuelva Vocales: 4, Consonantes: 5 */
 
+    let contarVocalesConsonantes = (cadena) => {
+      let numVocales = 0;
+      let numConsonantes = 0;
+      let numEspacios = 0;
+      let vocales = ['a', 'e', 'i', 'o', 'u'];
+      for(let i=0; i < cadena.length; i++){
+        if(cadena[i] === ' '){
+              numEspacios++;
+          }
+        for(let j=0; j < vocales.length; j++){
+          if(cadena[i] === vocales[j]){
+            numVocales++;
+          }
+        }
+      }
+      console.log(`El número de vocales es ${numVocales}`);
+      console.log(`El número de espacios es ${numEspacios}`);
+      numConsonantes = cadena.length - numVocales - numEspacios;
+      console.log(`El número de consonantes es ${numConsonantes}`)
+    }
 
+    // contarVocalesConsonantes('Hola mundo');
+
+    // Ejercicio 18 con expresiones regulares y bucle forof:
+
+    const contarVC = (cadena) => {
+      cadena = cadena.toLowerCase();
+      let vocales = /[aeiouáéíúóü]/;
+      let signos = /[.,;:!¿¡\'"\(\)\[\]\?]/;
+      let numS = 0;
+      let numV = 0;
+      let numC = 0;
+      let espacio = 0;
+      for (const letra of cadena) {
+        if( vocales.test(letra)){ // Si da true el test se suma una nueva vocal
+          numV ++;
+        }else if (letra === " "){
+          espacio ++;
+        }else if (signos.test(letra)){
+          numS ++;
+        }
+        else{
+          numC ++;
+        }
+      }
+      return console.info(`
+        Número de vocales: ${numV}
+        Número de consonantes: ${numC}
+        ` );
+    }
+
+    // contarVC ('Hola mundo...?');
 
     /* 19) Programa una función que valide que un texto sea un nombre válido, pe. miFuncion("Jonathan MirCha") devolverá verdadero */
 
+    const validarNombre = (nombre) => {
+      if(typeof nombre !== "string" || nombre === ""){
+        console.log("No has introducido un nombre");
+      }else{
+        let regex = /^[A-Za-zÀ-ÿ'\s]+$/;
+        regex.test(nombre)
+          ? console.log("El formato del nombre es válido")
+          : console.log("El formato del nombre no es válido");
+        }
+    }
 
+    // validarNombre("Jonathan MirCha");
 
     /* 20) Programa una función que valide que un texto sea un email válido, pe. miFuncion("jonmircha@gmail.com") devolverá verdadero */
 
+    const validarEmail = (email) => {
+      if(typeof email !== "string" || email === ""){
+        console.log("No has introducido un nombre");
+      }else{
+        let regex = /[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/i;
+        regex.test(email)
+          ? console.log("El formato del email es válido")
+          : console.log("El formato del email no es válido");
+        }
+    }
+
+    // validarEmail("jonmircha@gmail.com");
+    // validarEmail("jonmircha@gmail..com");
 
 
     /* 21) Programa una función que dado un array numérico devuelve otro array con los números elevados al cuadrado, pe. mi_funcion([1, 4, 5]) devolverá [1, 16, 25] */
