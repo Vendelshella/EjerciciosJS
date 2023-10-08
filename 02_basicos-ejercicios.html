@@ -462,7 +462,13 @@
     const arrayCuadrado = (array) => {
       let arrayC = [];
       if(Array.isArray(array)){
-        for (const numero of array) {
+        // Validar que el array solo recibe números
+        for (let num of array) {
+          if(typeof num !== "number"){
+            console.log("Introduce numeros en tu arreglo");
+          }
+        }
+        for (let numero of array) {
           arrayC.push(numero*numero)
         }
       }else{
@@ -473,11 +479,24 @@
 
     // arrayCuadrado([1, 4, 5]);
 
+    // La validación de un arreglo con instance of es: (array instanceof Array)
+
     /* 22) Programa una función que dado un array devuelva el número mas alto y el más bajo de dicho array, pe. miFuncion([1, 4, 5, 99, -60]) devolverá [99, -60] */
 
     const numMinMax = (array) =>{
       let arrayMM = [];
+      // Validar que el array tiene valores
+      if(array.length === 0){
+        console.log("El array está vacío");
+      }
+      // Validar que el array solo recibe números
+      for (let num of array) {
+          if(typeof num !== "number"){
+            console.log("Introduce numeros en tu arreglo");
+          }
+      }
       if(Array.isArray(array)){
+        // Usamos el spread operator para analizar cada valor y que lo tome como número, si no se usa devolverá un NaN.
         let max = Math.max(...array);
         let min = Math.min(...array);
 
@@ -510,19 +529,168 @@
       return console.log(arrayPar, arrayImpar);
     }
 
-    arrayParImpar([1,2,3,4,5,6,7,8,9,0]);
+    // arrayParImpar([1,2,3,4,5,6,7,8,9,0]);
+
+    // Con el método filter:
+    function arrayParImpar2 (array) {
+      let arrayPar = [];
+      let arrayImpar = [];
+      // Validar que el array tiene valores
+      if(array.length === 0){
+        console.log("El array está vacío");
+      }
+      // Validar que el array solo recibe números
+      for (let num of array) {
+          if(typeof num !== "number"){
+            console.log("Introduce numeros en tu arreglo");
+          }
+      }
+      if(Array.isArray(array)){
+        // Devolvemos un objeto con los arrays
+        
+        return console.log(
+          {
+            pares: array.filter(num => num % 2 === 0),
+            impares: array.filter(num => num % 2 === 1)
+          }
+          // El método filter nos devuelve un array superficial copia de una porción de otro array al que se le pasa por una función con una condición que filtra sus elementos.
+        );
+      }else{
+        console.log("Introduce un array válido");
+      }
+    }
+
+    // arrayParImpar2([1,2,3,4,5,6,7,8,9,0]);
 
     /* 24) Programa una función que dado un arreglo de números devuelva un objeto con dos arreglos, el primero tendrá los numeros ordenados en forma ascendente y el segundo de forma descendiente, pe. miFuncion([7, 5,7,8,6]) devolverá { asc: [5,6,7,7,8], desc: [8,7,7,6,5] }*/
 
+      const arrayAscDesc = array => {
+        
+        // Validar que el array tiene valores
+        if(array.length === 0){
+          console.log("El array está vacío");
+        }
+        // Validar que el array solo recibe números
+        for (let num of array) {
+            if(typeof num !== "number"){
+              console.log("Introduce numeros en tu arreglo");
+            }
+        }
+        // Validar que el argumento es un array
+        if(array instanceof Array){
+          // Crear copias del array original
+          const arrayAsc = [...array];
+          const arrayDesc = [...array];
+          
+          // Ordenar las copias en orden ascendente y descendente
+          arrayAsc.sort((a, b) => a - b);
+          arrayDesc.sort((a, b) => b - a);
 
+          // Otra forma:
+          // arrayAsc.sort(); por defecto sort ordena el array de forma ascendente
+          // arrayDesc.sort().reverse();
+
+          // Guardo los arrays en un objeto
+          return console.log({arrayAsc, arrayDesc});
+        
+        }else{
+          console.log("Introduce un array");
+        }
+      }
+
+      // arrayAscDesc([7, 5, 7, 8, 6]);
 
     /* 25) Programa una función que dado un arreglo de elementos, elimine los duplicados, pe. miFuncion(["x", 10, "x", 2, "10", 10, true, true]) devolverá ["x", 10, 2, "10", true]  */
 
+    const eliminaDuplicados = array => {
 
+      let arrayFiltrado = [];
+
+      // Validar que el array tiene valores
+      if(array.length === 0){
+          console.log("El array está vacío");
+      }
+      // Validar que el argumento es un array
+      if(array instanceof Array){
+        // Cambiar el elemento que se repite por la palabra encontrado.
+        for (let i = 0; i < array.length; i++) {
+          for (let j = i+1; j < array.length; j++) {
+            if(array[i] === array[j]){
+              array[i] = "encontrado";
+            }
+          }
+        }
+        // Filtramos los elementos que no contienen la cadena de texto "encontrado" y los guardamos en un nuevo arrayFiltrado.
+        for (let elemento of array) {
+          arrayFiltrado = array.filter(elemento => elemento !== "encontrado")
+        }
+      }else{
+        console.log("Introduce un array");
+      }
+      return console.log(arrayFiltrado);
+    }
+
+    // eliminaDuplicados(["x", 10, "x", 2, "10", 10, true, true]);
+
+    /****************************/
+
+    // Con el método reduce:
+
+    const eliminaDuplicados2 = array => {
+
+      let arraySinDuplicados = [];
+
+      // Validar que el array tiene valores
+      if(array.length === 0){
+          console.log("El array está vacío");
+      }
+      // Validar que el argumento es un array
+      if(array instanceof Array){
+        
+        arraySinDuplicados = array.reduce(
+          (acumulador, elemento) => {
+            if(!acumulador.includes(elemento)){
+              acumulador.push(elemento);
+            }
+            return acumulador; // Devolver el acumulador en cada iteración
+          }, []
+        );
+
+      }else{
+        console.log("Introduce un array");
+      }
+      return console.log(arraySinDuplicados);
+    }
+
+    // eliminaDuplicados2(["x", 10, "x", 2, "10", 10, true, true]);
+
+    /****************************/
+
+    // Con el nuevo tipo de dato, objeto Set:
+    // Nos permite generar un conjunto de elementos en el cual no se permiten elementos duplicados
+
+    const eliminaDuplicados3 = array => {
+      return console.log({
+        array,
+        sinDuplicados: [...new Set(array)]
+      })
+    }
+
+    // eliminaDuplicados3(["x", 10, "x", 2, "10", 10, true, true]);
 
     /* 26) Programa una función que dado un arreglo de números obtenga el promedio, pe. promedio([9,8,7,6,5,4,3,2,1,0]) devolverá 4.5 */
 
+    const sumaElementos = array => {
+      let suma = 0;
+      // Al acumulador le damos valor inicial de 0
+      suma = array.reduce((acumulador, numero)=>{
+        return acumulador += numero;
+      }, 0);
 
+      console.log(`El promedio de sumar ${array.join(" + ")} es ${suma/array.length}`);
+    }
+
+    // sumaElementos([9,8,7,6,5,4,3,2,1,0]);
 
     /* 27) Programa una clase llamada Pelicula.
         La clase recibirá un objeto al momento de instanciarse con los siguentes datos: id de la película en IMDB, titulo, director, año de estreno, país o países de origen, géneros y calificación en IMBD.
@@ -537,10 +705,178 @@
           - Crea un método estático que devuelva los géneros aceptados*.
           - Valida que la calificación sea un número entre 0 y 10 pudiendo ser decimal de una posición.
           - Crea un método que devuelva toda la ficha técnica de la película.
+          
+          
           - Apartir de un arreglo con la información de 3 películas genera 3 instancias de la clase de forma automatizada e imprime la ficha técnica de cada película.
 
         * Géneros Aceptados: Action, Adult, Adventure, Animation, Biography, Comedy, Crime, Documentary ,Drama, Family, Fantasy, Film Noir, Game-Show, History, Horror, Musical, Music, Mystery, News, Reality-TV, Romance, Sci-Fi, Short, Sport, Talk-Show, Thriller, War, Western.
         */
+
+      class Pelicula {
+        constructor(id, titulo, director, anio, pais, genero, calificacion){
+          this.id = id;
+          this.titulo = titulo;
+          this.director = director;
+          this.anio = anio;
+          this.pais = pais;
+          this.genero = genero;
+          this.calificacion = calificacion;
+
+          // Los métodos se ejecutan en el constructor, así cuando se instancien los objetos se llevan a cabo las validaciones
+
+          this.validarId(id);
+          this.validarTitulo(titulo);
+          this.validarDirector(director);
+          this.validarAnio(anio);
+          this.validarPais(pais);
+          this.validarGenero(genero);
+          this.validarCalificacion(calificacion);
+        }
+        // Validar ID
+        validarId (id, titulo, director, anio, pais, genero, calificacion){
+          if(typeof id !== "string"){
+            console.warn("Introduce un ID tipo cadena de texto.");
+          }else if(id === ""){
+            console.warn("Introduce un ID");
+          }else{
+            let regexId = /^[a-z]{2}[0-9]{7}$/;
+            if (regexId.test(id) === false){
+              console.warn(`El ID ${id} introducido no es válido, por favor introduce dos letras seguidas de siete números consecutivos`);
+            } 
+          }
+          
+        }
+        // Validar titulo
+        validarTitulo (titulo){
+          if(typeof titulo !== "string"){
+            console.warn("Introduce un título tipo cadena de texto.");
+          }else if(titulo === "" || titulo === undefined){
+            console.warn("Introduce un título.");
+          }else{
+            if(titulo.length > 100){
+              console.warn("El título introducido no puede contener más de 100 caracteres.");
+            }
+          }
+        }
+        // Validar director
+        validarDirector (director){
+          if(typeof director !== "string"){
+            console.warn("Introduce un director tipo cadena de texto.");
+          }else if(director === "" || director === undefined){
+            console.warn("Introduce un director.");
+          }else{
+            if(director.length > 50){
+              console.warn("El nombre del director introducido no puede contener más de 50 caracteres.");
+            }
+          }
+          
+        }
+        // Validar año
+        validarAnio (anio){
+          if(typeof anio !== "number"){
+            console.warn("Introduce un año numérico");
+          }else{
+            let regexAnio = /^[0-9]{4}$/;
+            if (regexAnio.test(anio) === false){
+              console.warn(`El año ${anio} introducido no es válido, por favor introduce un año válido de cuatro dígitos`);
+            } 
+          }
+          
+        }
+        // Validar país
+        validarPais (pais){
+          if(pais instanceof Array === false){
+            console.warn("El país o países tienen que ser introducidos dentro de un arreglo.")
+          }
+        }
+        // Validar género
+        validarGenero (genero){
+          if(genero instanceof Array){
+            let generosValidos = ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,"Drama", "Family", "Fantasy", "Film Noir", "Game-Show", "History", "Horror", "Musical", "Music", "Mystery", "News", "Reality-TV", "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller", "War", "Western"];
+            // El método every() verifica si cada elemento del genero está presente en el array generosValidos utilizando includes()
+            if (!(genero.every(elemento => generosValidos.includes(elemento)))){
+              console.warn("Introduce generos válidos que se encuentren dentro de la siguiente lista: Action, Adult, Adventure, Animation, Biography, Comedy, Crime, Documentary ,Drama, Family, Fantasy, Film Noir, Game-Show, History, Horror, Musical, Music, Mystery, News, Reality-TV, Romance, Sci-Fi, Short, Sport, Talk-Show, Thriller, War, Western");
+            }
+          }else{
+            console.warn("El género o géneros tienen que ser introducidos dentro de un arreglo.");
+          }
+        }
+        // Método static para géneros
+        static listaGeneros(){
+          let lista = ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,"Drama", "Family", "Fantasy", "Film Noir", "Game-Show", "History", "Horror", "Musical", "Music", "Mystery", "News", "Reality-TV", "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller", "War", "Western"];
+          return console.log(lista.join(", "));
+        }
+        // Validar calificación
+        validarCalificacion (calificacion){
+          let regexCalificacion = /^(10|[0-9](\.[0-9])?)$/;
+          if(regexCalificacion.test(calificacion) === false){
+            console.warn("La calificación introducida no es válida. Asegúrate de que si el número contiene un decimal, éste sea separado de la parte entera por un punto.");
+          }
+        }
+        // Devolver ficha técnica
+        fichaTecnica(id, titulo, director, anio, pais, genero, calificacion){
+          return console.log(`
+            ID: ${this.id}\n
+            Título: ${this.titulo}\n
+            Director: ${this.director}\n
+            Año: ${this.anio}\n
+            País: ${this.pais}\n
+            Género: ${this.genero}\n
+            Calificación: ${this.calificacion}\n
+            
+          `);
+            
+        }
+      }
+      // Método static para consultar la lista de géneros permitidos.
+      Pelicula.listaGeneros();
+      // const Peli1 = new Pelicula ();
+      const Peli2 = new Pelicula ('tt8635793', 'La cosa está que arde', 'Quentin Tarantino', 1987, ["Francia"], ["Drama", "Sci-Fi"], 8.4);
+
+      // Leer la ficha técnica de Peli2
+      Peli2.fichaTecnica();
+
+      // arreglo con tres peliculas
+      const misPeliculas = [
+        {
+          id: 'tl6548796',
+          titulo:'Película1',
+          director: 'Director1',
+          anio: 1999,
+          pais: ["Albania"],
+          genero: ["Comedy"],
+          calificacion: 8.4
+        },
+        {
+          id: 'th6134786',
+          titulo:'Película2',
+          director: 'Director2',
+          anio: 1995,
+          pais: ["Lituania"],
+          genero: ["Drama"],
+          calificacion: 8.4
+        },
+        {
+          id: 'ty6548700',
+          titulo:'Película3',
+          director: 'Director3',
+          anio: 1988,
+          pais: ["Albania"],
+          genero: ["Romance"],
+          calificacion: 8.4
+        }
+      ];
+      // Recorrer el array misPeliculas con un forEach para que cada película sea instanciada, pasándole a través del argumento pelicula los valores correspondientes de cada objeto.
+      misPeliculas.forEach(pelicula => {
+        new Pelicula(
+          pelicula.id,
+          pelicula.titulo,
+          pelicula.director,
+          pelicula.anio,
+          pelicula.pais,
+          pelicula.genero,
+          pelicula.calificacion
+        ).fichaTecnica()});
   </script>
 </body>
 
